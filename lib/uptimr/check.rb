@@ -1,18 +1,21 @@
+require 'time'
+
 module Uptimr
 	class Check
 		attr_accessor :id, :is_up, :last_tested, :name, :responsiveness, 
 								:response_time, :availability, :url, :count,
-								:daily_stats, :hourly_stats, :monthly_stats
+								:daily_stats, :hourly_stats, :monthly_stats, :first_tested
 
 		def initialize(params)
 			@id = params[:_id]
 			@is_up = params[:isUp]
-			@last_tested = params[:lastTested]
+			@first_tested = Time.iso8601(params[:firstTested]).localtime
+			@last_tested = Time.iso8601(params[:lastTested]).localtime
 			@name = params[:name]
 			@url = params[:url]
-			@responsiveness = params[:qos][:responsiveness]
-			@response_time = params[:qos][:responseTime]
-			@availability = params[:qos][:availability]
+			@responsiveness = params[:qos][:responsiveness].to_f
+			@response_time = params[:qos][:responseTime].to_f
+			@availability = params[:qos][:availability].to_f
 			@count = params[:qos][:count]
 		end
 
@@ -21,9 +24,8 @@ module Uptimr
 			response.map { |check| self.new check }
 		end
 
-		def self.find_by_id(id)
-			response = Uptimr.request "/api/checks/#{id}", method: :get
-			self.new response
+		def self.find(id)
+			self.new Uptimr.request "/api/checks/#{id}", method: :get
 		end
 
 		def get_hourly_stats(from=0, to=Time.now)

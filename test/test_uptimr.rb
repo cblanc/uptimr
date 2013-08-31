@@ -30,7 +30,7 @@ class TestUptimr < Test::Unit::TestCase
 	context "Invalid request attributes" do
 		should "throw an error if invalid http method" do
 			assert_raises Uptimr::UptimrError do
-				Check.list
+				Uptimr::Check.list
 			end
 		end
 	end
@@ -49,8 +49,8 @@ class TestUptimr < Test::Unit::TestCase
 		end
 
 		should "throw an error if no URL" do
-			assert_raises Uptimr:UptimrError do
-				Uptimr.request("", {})
+			assert_raises Uptimr::UptimrError do
+				Uptimr::Check.list
 			end
 		end
 
