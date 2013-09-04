@@ -19,8 +19,8 @@ spec = Gem::Specification.new do |s|
   s.add_development_dependency('shoulda', '~> 3.5.0')
   s.add_development_dependency('rake')
 
+  s.licenses = ['MIT']
   s.files = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- test/*`.split("\n")
-  s.require_paths = ['lib']
-  s.licenses = ['MIT']
+  s.require_paths = ['lib']  
 end
